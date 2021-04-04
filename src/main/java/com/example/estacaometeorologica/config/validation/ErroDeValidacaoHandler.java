@@ -19,14 +19,16 @@ public class ErroDeValidacaoHandler {
     public List<ErroDeFormDto> handle(HttpMessageNotReadableException exception){
         List<ErroDeFormDto> erroDeFormDtos = new ArrayList<>();
 
-        if(exception.toString().indexOf("Required request body is missing") != -1){
+        String mensagem = exception.getMessage();
+
+        if(mensagem.indexOf("Required request body is missing") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("", "Corpo da requisição não encontrado"));
             return erroDeFormDtos;
         }
-        if(exception.getCause().toString().indexOf("DateTimeParseException") != -1){
+        if(mensagem.toString().indexOf("DateTimeParseException") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("data", "Formato de data inválido. Utilize o formato yyyy-MM-dd HH:mm:ss"));
         }
-        if(exception.getCause().toString().indexOf("JsonParseException") != -1){
+        if(mensagem.toString().indexOf("JsonParseException") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("","JSON enviado em formato inválido"));
         }
         return erroDeFormDtos;
@@ -37,26 +39,27 @@ public class ErroDeValidacaoHandler {
     public List<ErroDeFormDto> handle(MethodArgumentNotValidException exception){
         List<ErroDeFormDto> erroDeFormDtos = new ArrayList<>();
 
-        if(exception.getMessage().indexOf("NotNull.dadosColetadosForm.data") != -1){
+        String mensagem = exception.getMessage();
+
+        if(mensagem.indexOf("NotNull.dadosColetadosForm.data") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("data", "Campo não preenchido"));
         }
-
-        if(exception.getMessage().indexOf("Insira precipitação") != -1){
+        if(mensagem.indexOf("Insira precipitação") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("precipitação", "Campo não preenchido"));
         }
-        if(exception.getMessage().indexOf("Insira velocidade_vento") != -1){
+        if(mensagem.indexOf("Insira velocidade_vento") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("velocidade_vento", "Campo não preenchido"));
         }
-        if(exception.getMessage().indexOf("Insira direcao_vento") != -1){
+        if(mensagem.indexOf("Insira direcao_vento") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("direcao_vento", "Campo não preenchido"));
         }
-        if(exception.getMessage().indexOf("Insira temperatura") != -1){
+        if(mensagem.indexOf("Insira temperatura") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("temperatura", "Campo não preenchido"));
         }
-        if(exception.getMessage().indexOf("Insira umidade_ar") != -1){
+        if(mensagem.indexOf("Insira umidade_ar") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("umidade_ar", "Campo não preenchido"));
         }
-        if(exception.getMessage().indexOf("Insira pressao_atmosferica") != -1){
+        if(mensagem.indexOf("Insira pressao_atmosferica") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("pressao_atmosferica", "Campo não preenchido"));
         }
         return erroDeFormDtos;
@@ -66,12 +69,20 @@ public class ErroDeValidacaoHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public List<ErroDeFormDto> handle(MissingServletRequestParameterException exception){
         List<ErroDeFormDto> erroDeFormDtos = new ArrayList<>();
-        System.out.println(exception);
-        if(exception.getMessage().indexOf("'data_inicial' is not present") != -1){
+
+        String mensagem = exception.getMessage();
+
+        if(mensagem.indexOf("'data_inicial' is not present") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("data_inicial", "Campo não preenchido"));
         }
-        if(exception.getMessage().indexOf("'data_final' is not present") != -1){
+        if(mensagem.indexOf("'data_final' is not present") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("data_final", "Campo não preenchido"));
+        }
+        if(mensagem.indexOf("'pagina' is not present") != -1){
+            erroDeFormDtos.add(new ErroDeFormDto("pagina", "Campo não preenchido"));
+        }
+        if(mensagem.indexOf("'quantidade' is not present") != -1){
+            erroDeFormDtos.add(new ErroDeFormDto("quantidade", "Campo não preenchido"));
         }
         return erroDeFormDtos;
     }
@@ -82,6 +93,22 @@ public class ErroDeValidacaoHandler {
         List<ErroDeFormDto> erroDeFormDtos = new ArrayList<>();
         if(exception.getMessage().indexOf("java.time.LocalDateTime") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("data", "Formato de data inválido. Utilize o formato yyyy-MM-dd HH:mm:ss"));
+        }
+        return erroDeFormDtos;
+    }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public List<ErroDeFormDto> handle(IllegalArgumentException exception){
+        List<ErroDeFormDto> erroDeFormDtos = new ArrayList<>();
+
+        String mensagem = exception.getMessage();
+
+        if(mensagem.indexOf("index") != -1){
+            erroDeFormDtos.add(new ErroDeFormDto("pagina", "pagina não dever ser menor que 0"));
+        }
+        if(mensagem.indexOf("size") != -1){
+            erroDeFormDtos.add(new ErroDeFormDto("quantidade", "quantidade não dever ser menor que 1"));
         }
         return erroDeFormDtos;
     }
