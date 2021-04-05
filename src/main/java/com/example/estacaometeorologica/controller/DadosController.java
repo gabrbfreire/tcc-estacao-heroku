@@ -31,11 +31,13 @@ public class DadosController {
 
     @GetMapping("dados-coletados")
     @Cacheable(value = "dados-coletados")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<List<DadosColetados>> getDadosColetados(){
         return new ResponseEntity<>(dadosColetadosService.getDadosColetados(), HttpStatus.OK);
     }
 
     @GetMapping("dados-coletados-por-data")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<DadosColetadosPaginadosDto> getDadosColetadosPorData(
                                                                          @RequestParam
                                                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -67,6 +69,7 @@ public class DadosController {
     }
 
     @GetMapping("dados-recentes")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<List<DadosColetados>> getDadosColetadosRecentes(@RequestParam
                                                                                       @Min(1)
                                                                                       @NotNull
@@ -77,6 +80,7 @@ public class DadosController {
 
     @PostMapping("dados-coletados")
     @CacheEvict(value = "dados-coletados", allEntries = true)
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Object> saveDadosColetados(@RequestBody @Valid DadosColetadosForm dadosColetadosForm){
         dadosColetadosService.saveDadosColetados(dadosColetadosForm.converter());
         return new ResponseEntity<>(HttpStatus.CREATED);
