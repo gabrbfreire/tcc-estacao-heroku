@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface DadosColetadosRepository extends MongoRepository<DadosColetados, String> {
 
-    Page<DadosColetados> findByDataBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+    Page<DadosColetados> findByDataBetweenOrderByDataDesc(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
     List<DadosColetados> findAllByOrderByDataDesc(Pageable pageable);
 }

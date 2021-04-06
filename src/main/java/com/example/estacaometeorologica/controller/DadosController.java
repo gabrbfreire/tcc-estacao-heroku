@@ -60,11 +60,17 @@ public class DadosController {
         Pageable paginacao = PageRequest.of(pagina-1, quantidade);
         Page<DadosColetados> itemsPaginados = dadosColetadosService.getDadosColetadosPorData(data_inicial, data_final, paginacao);
 
-        long itemInicialPagina = pagina * itemsPaginados.getNumberOfElements() - itemsPaginados.getNumberOfElements() + 1;
-        int itemFinalPagina = pagina * itemsPaginados.getNumberOfElements();
+        long itemInicialPagina = pagina * quantidade - quantidade + 1;
+        int itemFinalPagina = pagina * quantidade;
+        if(itemFinalPagina > itemsPaginados.getTotalElements()){
+            itemFinalPagina = (int) itemsPaginados.getTotalElements();
+        }
 
-        DadosColetadosPaginadosDto dadosColetadosPaginadosDto = new DadosColetadosPaginadosDto(itemsPaginados.getContent(),
-                "Mostrando de "+itemInicialPagina +" a "+ itemFinalPagina + " de " + itemsPaginados.getTotalElements() +" registros");
+        DadosColetadosPaginadosDto dadosColetadosPaginadosDto = new DadosColetadosPaginadosDto(
+                itemsPaginados.getContent(),
+                "Mostrando de "+ itemInicialPagina +" a "+ itemFinalPagina + " de " + itemsPaginados.getTotalElements() +" registros",
+                itemsPaginados.getTotalPages()
+        );
         return ResponseEntity.ok().body(dadosColetadosPaginadosDto);
     }
 

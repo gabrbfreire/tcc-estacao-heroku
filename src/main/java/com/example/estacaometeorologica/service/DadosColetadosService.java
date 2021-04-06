@@ -24,7 +24,7 @@ public class DadosColetadosService {
     }
 
     public Page<DadosColetados> getDadosColetadosPorData(LocalDateTime data_inicial, LocalDateTime data_final, Pageable paginacao) {
-        return dadosColetadosRepository.findByDataBetween(data_inicial, data_final, paginacao);
+        return dadosColetadosRepository.findByDataBetweenOrderByDataDesc(data_inicial, data_final, paginacao);
     }
 
     public List<DadosColetados> getDadosColetadosRecentes(Pageable paginacao) {
