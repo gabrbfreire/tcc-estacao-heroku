@@ -43,7 +43,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/login", "/sign-in", "/swagger-ui.html#").permitAll()
+                .antMatchers(HttpMethod.POST,"/login", "/sign-in").permitAll()
+                .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**").permitAll() // permitir swagger
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
