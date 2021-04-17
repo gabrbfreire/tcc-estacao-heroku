@@ -1,14 +1,13 @@
 package com.example.estacaometeorologica.controller;
 
+import com.example.estacaometeorologica.controller.dto.DadosColetadosDto;
 import com.example.estacaometeorologica.controller.dto.DadosColetadosPaginadosDto;
+import com.example.estacaometeorologica.controller.dto.DadosColetadosRecentesDto;
 import com.example.estacaometeorologica.controller.form.DadosColetadosForm;
 import com.example.estacaometeorologica.model.DadosColetados;
 import com.example.estacaometeorologica.service.DadosColetadosService;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,24 +19,22 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")//@CrossOrigin(origins = "http://localhost:3000") //todo limitar origens
 public class DadosController {
 
     @Autowired
     private DadosColetadosService dadosColetadosService;
 
     @GetMapping("dados-coletados")
-    @Cacheable(value = "dados-coletados")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<List<DadosColetados>> getDadosColetados(){
-        return new ResponseEntity<>(dadosColetadosService.getDadosColetados(), HttpStatus.OK);
+    public ResponseEntity<DadosColetadosDto> getDadosColetados(){
+        DadosColetadosDto dadosColetadosDto = new DadosColetadosDto(dadosColetadosService.getDadosColetados());
+        return new ResponseEntity<>(dadosColetadosDto, HttpStatus.OK);
     }
 
     @GetMapping("dados-coletados-por-data")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<DadosColetadosPaginadosDto> getDadosColetadosPorData(
                                                                          @RequestParam
                                                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -71,24 +68,24 @@ public class DadosController {
                 "Mostrando de "+ itemInicialPagina +" a "+ itemFinalPagina + " de " + itemsPaginados.getTotalElements() +" registros",
                 itemsPaginados.getTotalPages()
         );
-        return ResponseEntity.ok().body(dadosColetadosPaginadosDto);
+        return new ResponseEntity<>(dadosColetadosPaginadosDto, HttpStatus.OK);
     }
 
     @GetMapping("dados-recentes")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<List<DadosColetados>> getDadosColetadosRecentes(@RequestParam
-                                                                                      @Min(1)
-                                                                                      @NotNull
-                                                                                  Integer quantidadeDeDados){
-        Pageable paginacao = PageRequest.of(0, quantidadeDeDados);
-        return new ResponseEntity(dadosColetadosService.getDadosColetadosRecentes(paginacao), HttpStatus.OK);
+    public ResponseEntity<DadosColetadosRecentesDto> getDadosColetadosRecentes(){
+        DadosColetadosRecentesDto dadosColetadosRecentesDto = new DadosColetadosRecentesDto(dadosColetadosService.getDadosColetadosRecentes());
+        return new ResponseEntity(dadosColetadosRecentesDto, HttpStatus.OK);
     }
 
     @PostMapping("dados-coletados")
-    @CacheEvict(value = "dados-coletados", allEntries = true)
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Object> saveDadosColetados(@RequestBody @Valid DadosColetadosForm dadosColetadosForm){
         dadosColetadosService.saveDadosColetados(dadosColetadosForm.converter());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+//    @PostMapping("dados-recentes-quantidade")
+//    public ResponseEntity<Object> saveDadosColetados(@RequestParam int quantidadeDeDados){
+//        DadosColetadosService.setQuantidadeDeDados(quantidadeDeDados);
+//        return new ResponseEntity<>(HttpStatus.CREATED);
+//    }
 }

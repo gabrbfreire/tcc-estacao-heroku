@@ -20,23 +20,11 @@ public class DadosColetadosPaginadosDto {
         return registros;
     }
 
-    public void setRegistros(List<DadosColetados> registros) {
-        this.registros = registros;
-    }
-
     public String getPaginacao() {
         return paginacao;
     }
 
-    public void setPaginacao(String paginacao) {
-        this.paginacao = paginacao;
-    }
-
     public int getTotal_de_paginas() {
         return total_de_paginas;
-    }
-
-    public void setTotal_de_paginas(int total_de_paginas) {
-        this.total_de_paginas = total_de_paginas;
     }
 }

@@ -4,6 +4,7 @@ import com.example.estacaometeorologica.model.DadosColetados;
 import com.example.estacaometeorologica.repository.DadosColetadosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class DadosColetadosService {
     private DadosColetadosRepository dadosColetadosRepository;
 
     public List<DadosColetados> getDadosColetados(){
-        return dadosColetadosRepository.findAll();
+        return dadosColetadosRepository.findAllByOrderByDataDesc();
     }
 
     public void saveDadosColetados(DadosColetados dadosColetados){
@@ -27,7 +28,8 @@ public class DadosColetadosService {
         return dadosColetadosRepository.findByDataBetweenOrderByDataDesc(data_inicial, data_final, paginacao);
     }
 
-    public List<DadosColetados> getDadosColetadosRecentes(Pageable paginacao) {
+    public List<DadosColetados> getDadosColetadosRecentes() {
+        Pageable paginacao = PageRequest.of(0, 10);
         return dadosColetadosRepository.findAllByOrderByDataDesc(paginacao);
     }
 }

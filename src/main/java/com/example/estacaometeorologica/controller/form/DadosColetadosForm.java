@@ -15,17 +15,17 @@ public class DadosColetadosForm {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull
     private LocalDateTime data;
-    @NotNull(message = "Insira precipitação")
+    @NotNull(message = "Insira o campo precipitação")
     private Double precipitacao;
-    @NotNull(message = "Insira velocidade_vento")
+    @NotNull(message = "Insira o campo velocidade_vento")
     private Double velocidade_vento;
-    @NotNull(message = "Insira direcao_vento")
+    @NotNull(message = "Insira o campo direcao_vento")
     private Double direcao_vento;
-    @NotNull(message = "Insira temperatura")
+    @NotNull(message = "Insira o campo temperatura")
     private Double temperatura;
-    @NotNull(message = "Insira umidade_ar")
+    @NotNull(message = "Insira o campo umidade_ar")
     private Double umidade_ar;
-    @NotNull(message = "Insira pressao_atmosferica")
+    @NotNull(message = "Insira o campo pressao_atmosferica")
     private Double pressao_atmosferica;
 
     public DadosColetados converter() {
