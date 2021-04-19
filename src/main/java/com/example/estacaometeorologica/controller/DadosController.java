@@ -1,5 +1,6 @@
 package com.example.estacaometeorologica.controller;
 
+import com.example.estacaometeorologica.config.validation.ErroDeFormDto;
 import com.example.estacaometeorologica.controller.dto.DadosColetadosDto;
 import com.example.estacaometeorologica.controller.dto.DadosColetadosPaginadosDto;
 import com.example.estacaometeorologica.controller.dto.DadosColetadosRecentesDto;
@@ -78,9 +79,12 @@ public class DadosController {
     }
 
     @PostMapping("dados-coletados")
-    public ResponseEntity<Object> saveDadosColetados(@RequestBody @Valid DadosColetadosForm dadosColetadosForm){
-        dadosColetadosService.saveDadosColetados(dadosColetadosForm.converter());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody @Valid DadosColetadosForm dadosColetadosForm){
+        if(dadosColetadosForm.getCodigo().equals("2q6VYU4vzsWWPX7avFdrVYTxOs0fwqP9")){
+            dadosColetadosService.saveDadosColetados(dadosColetadosForm);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(new ErroDeFormDto("codigo","Código inválido"), HttpStatus.CREATED);
     }
 
 //    @PostMapping("dados-recentes-quantidade")

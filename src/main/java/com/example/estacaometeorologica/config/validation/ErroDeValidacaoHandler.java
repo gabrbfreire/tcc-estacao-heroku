@@ -44,22 +44,22 @@ public class ErroDeValidacaoHandler {
         if(mensagem.indexOf("NotNull.dadosColetadosForm.data") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("data", "Campo não preenchido"));
         }
-        if(mensagem.indexOf("Insira precipitação") != -1){
+        if(mensagem.indexOf("Insira o campo precipitação") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("precipitação", "Campo não preenchido"));
         }
-        if(mensagem.indexOf("Insira velocidade_vento") != -1){
+        if(mensagem.indexOf("Insira o campo velocidade_vento") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("velocidade_vento", "Campo não preenchido"));
         }
-        if(mensagem.indexOf("Insira direcao_vento") != -1){
+        if(mensagem.indexOf("Insira o campo direcao_vento") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("direcao_vento", "Campo não preenchido"));
         }
-        if(mensagem.indexOf("Insira temperatura") != -1){
+        if(mensagem.indexOf("Insira o campo temperatura") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("temperatura", "Campo não preenchido"));
         }
-        if(mensagem.indexOf("Insira umidade_ar") != -1){
+        if(mensagem.indexOf("Insira o campo umidade_ar") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("umidade_ar", "Campo não preenchido"));
         }
-        if(mensagem.indexOf("Insira pressao_atmosferica") != -1){
+        if(mensagem.indexOf("Insira o campo pressao_atmosferica") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("pressao_atmosferica", "Campo não preenchido"));
         }
         return erroDeFormDtos;
