@@ -84,12 +84,6 @@ public class DadosController {
             dadosColetadosService.saveDadosColetados(dadosColetadosForm);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(new ErroDeFormDto("codigo","Código inválido"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ErroDeFormDto("codigo","Código inválido"), HttpStatus.BAD_REQUEST);
     }
-
-//    @PostMapping("dados-recentes-quantidade")
-//    public ResponseEntity<Object> saveDadosColetados(@RequestParam int quantidadeDeDados){
-//        DadosColetadosService.setQuantidadeDeDados(quantidadeDeDados);
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
 }
