@@ -19,7 +19,11 @@ public class UsuarioService {
 
     public String registrarUsuario(UsuarioSigninForm usuarioSigninForm) {
         if(findUsuarioByEmail(usuarioSigninForm.getEmail()) == null){
-            Usuario usuario = new Usuario(usuarioSigninForm.getNome(), usuarioSigninForm.getEmail(), new BCryptPasswordEncoder().encode(usuarioSigninForm.getSenha()));
+            Usuario usuario = new Usuario(
+                    usuarioSigninForm.getNome(),
+                    usuarioSigninForm.getEmail(),
+                    new BCryptPasswordEncoder().encode(usuarioSigninForm.getSenha()),
+                    usuarioSigninForm.getImagem());
             usuarioRepository.save(usuario);
             return "";
         }else{

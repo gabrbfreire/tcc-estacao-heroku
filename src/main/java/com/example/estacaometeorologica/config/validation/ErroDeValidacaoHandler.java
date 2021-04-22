@@ -59,8 +59,11 @@ public class ErroDeValidacaoHandler {
         if(mensagem.indexOf("Insira o campo umidade_ar") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("umidade_ar", "Campo não preenchido"));
         }
-        if(mensagem.indexOf("Insira o campo pressao_atmosferica") != -1){
+        if(mensagem.indexOf("Insira o campo pressao_atmosferica") != -1) {
             erroDeFormDtos.add(new ErroDeFormDto("pressao_atmosferica", "Campo não preenchido"));
+        }
+        if(mensagem.indexOf("150x150") != -1){
+            erroDeFormDtos.add(new ErroDeFormDto("imagem", "Imagem tem que ter no máximo 150x150"));
         }
         return erroDeFormDtos;
     }

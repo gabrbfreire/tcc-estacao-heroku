@@ -2,6 +2,7 @@ package com.example.estacaometeorologica.controller.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UsuarioSigninForm {
 
@@ -12,6 +13,9 @@ public class UsuarioSigninForm {
     private String email;
     @NotNull(message = "Insira o campo senha")
     private String senha;
+    @NotNull(message = "Insira o campo avatar")
+    @Size(max = 500, message = "Imagem tem que ter no máximo 150x150")
+    private String imagem;
 
     public UsuarioSigninForm(){}
 
@@ -41,5 +45,13 @@ public class UsuarioSigninForm {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 }
