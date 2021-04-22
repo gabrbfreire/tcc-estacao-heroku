@@ -63,7 +63,7 @@ public class ErroDeValidacaoHandler {
             erroDeFormDtos.add(new ErroDeFormDto("pressao_atmosferica", "Campo não preenchido"));
         }
         if(mensagem.indexOf("150x150") != -1){
-            erroDeFormDtos.add(new ErroDeFormDto("imagem", "Imagem tem que ter no máximo 150x150"));
+            erroDeFormDtos.add(new ErroDeFormDto("imagem", "Imagem tem que ter no máximo 40kB"));
         }
         return erroDeFormDtos;
     }

@@ -13,8 +13,7 @@ public class UsuarioSigninForm {
     private String email;
     @NotNull(message = "Insira o campo senha")
     private String senha;
-    @NotNull(message = "Insira o campo avatar")
-    @Size(max = 500, message = "Imagem tem que ter no máximo 150x150")
+    @Size(max = 60000, message = "Imagem tem que ter no máximo 150x150")
     private String imagem;
 
     public UsuarioSigninForm(){}
