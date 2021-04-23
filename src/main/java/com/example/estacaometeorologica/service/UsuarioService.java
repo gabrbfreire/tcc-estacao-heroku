@@ -1,6 +1,7 @@
 package com.example.estacaometeorologica.service;
 
 import com.example.estacaometeorologica.controller.dto.DadosUsuarioDto;
+import com.example.estacaometeorologica.controller.form.ImagemUsuarioForm;
 import com.example.estacaometeorologica.controller.form.UsuarioSigninForm;
 import com.example.estacaometeorologica.model.Usuario;
 import com.example.estacaometeorologica.repository.UsuarioRepository;
@@ -41,5 +42,11 @@ public class UsuarioService {
     public DadosUsuarioDto getDadosUsuario(String email){
         Usuario usuario = findUsuarioByEmail(email);
         return new DadosUsuarioDto(usuario.getNome(), usuario.getImagem());
+    }
+
+    public void alterarImagem(String imagem, String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        usuario.setImagem(imagem);
+        usuarioRepository.save(usuario);
     }
 }

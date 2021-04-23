@@ -2,6 +2,8 @@ package com.example.estacaometeorologica.controller;
 
 import com.example.estacaometeorologica.config.validation.ErroDeFormDto;
 import com.example.estacaometeorologica.controller.dto.DadosUsuarioDto;
+import com.example.estacaometeorologica.controller.dto.ImagemUsuarioDto;
+import com.example.estacaometeorologica.controller.form.ImagemUsuarioForm;
 import com.example.estacaometeorologica.controller.form.UsuarioLoginForm;
 import com.example.estacaometeorologica.controller.form.UsuarioSigninForm;
 import com.example.estacaometeorologica.service.TokenService;
@@ -53,6 +55,16 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.OK);
         }else{
             return new ResponseEntity<>(new ErroDeFormDto("email", resultadoRegistro),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("alterar-imagem")
+    public ResponseEntity<ImagemUsuarioDto> alterarImagem(@RequestBody @Valid ImagemUsuarioForm imagemUsuarioForm, Authentication authentication){
+        try {
+            usuarioService.alterarImagem(imagemUsuarioForm.getImagem(), authentication.getName());
+            return new ResponseEntity<>(new ImagemUsuarioDto(imagemUsuarioForm.getImagem()), HttpStatus.OK);
+        }catch (AuthenticationException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }
