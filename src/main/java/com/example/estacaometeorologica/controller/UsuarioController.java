@@ -1,7 +1,7 @@
 package com.example.estacaometeorologica.controller;
 
 import com.example.estacaometeorologica.config.validation.ErroDeFormDto;
-import com.example.estacaometeorologica.controller.dto.TokenDto;
+import com.example.estacaometeorologica.controller.dto.DadosUsuarioDto;
 import com.example.estacaometeorologica.controller.form.UsuarioLoginForm;
 import com.example.estacaometeorologica.controller.form.UsuarioSigninForm;
 import com.example.estacaometeorologica.service.TokenService;
@@ -31,12 +31,16 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("login")
-    public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid UsuarioLoginForm usuarioLoginForm){
+    public ResponseEntity<DadosUsuarioDto> autenticar(@RequestBody @Valid UsuarioLoginForm usuarioLoginForm){
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuarioLoginForm.getEmail(), usuarioLoginForm.getSenha()));
             String token = tokenService.gerarToken(authentication);
 
-            return new ResponseEntity<>(new TokenDto(token, "Bearer"), HttpStatus.OK);
+            DadosUsuarioDto dadosUsuarioDto = usuarioService.getDadosUsuario(usuarioLoginForm.getEmail());
+            dadosUsuarioDto.setToken(token);
+            dadosUsuarioDto.setTipo_autenticacao("Bearer");
+
+            return new ResponseEntity<>(dadosUsuarioDto, HttpStatus.OK);
         }catch (AuthenticationException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
