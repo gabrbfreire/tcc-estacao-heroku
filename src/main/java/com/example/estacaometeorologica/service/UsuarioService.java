@@ -1,11 +1,14 @@
 package com.example.estacaometeorologica.service;
 
 import com.example.estacaometeorologica.controller.dto.DadosUsuarioDto;
-import com.example.estacaometeorologica.controller.form.ImagemUsuarioForm;
 import com.example.estacaometeorologica.controller.form.UsuarioSigninForm;
 import com.example.estacaometeorologica.model.Usuario;
 import com.example.estacaometeorologica.repository.UsuarioRepository;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,10 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private JavaMailSender javaMailSender;
+    @Value("${spring.mail.username}")
+    private String emailRemetente;
 
     public Usuario findUsuarioByEmail(String email){
         return usuarioRepository.findByEmail(email);
@@ -47,6 +54,26 @@ public class UsuarioService {
     public void alterarImagem(String imagem, String email) {
         Usuario usuario = usuarioRepository.findByEmail(email);
         usuario.setImagem(imagem);
+        usuarioRepository.save(usuario);
+    }
+
+    public void resetarSenha(String email) {
+        Usuario usuario = findUsuarioByEmail(email);
+        String novaSenha = RandomStringUtils.randomAlphabetic(10);
+        usuario.setSenha(new BCryptPasswordEncoder().encode(novaSenha));
+        usuarioRepository.save(usuario);
+
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(email);
+        simpleMailMessage.setFrom(emailRemetente);
+        simpleMailMessage.setSubject("Reset de senha");
+        simpleMailMessage.setText("Sua senha de acesso foi resetada. \n\nSua nova senha é: "+novaSenha);
+        javaMailSender.send(simpleMailMessage);
+    }
+
+    public void alterarSenha(String nova_senha, String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        usuario.setSenha(new BCryptPasswordEncoder().encode(nova_senha));
         usuarioRepository.save(usuario);
     }
 }

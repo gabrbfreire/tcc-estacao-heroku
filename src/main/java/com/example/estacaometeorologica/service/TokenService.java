@@ -38,4 +38,17 @@ public class TokenService {
     public String getIdUsuario(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
+
+    public String gerarTokenAlterarSenha(Usuario usuario){
+        Date agora = new Date();
+        Date dataExpiracao = new Date(agora.getTime() + Long.parseLong("1800000"));
+
+        return Jwts.builder()
+                .setIssuer("API estação meteorológica")
+                .setSubject("" + usuario.getId())
+                .setIssuedAt(agora)
+                .setExpiration(dataExpiracao)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+    }
 }

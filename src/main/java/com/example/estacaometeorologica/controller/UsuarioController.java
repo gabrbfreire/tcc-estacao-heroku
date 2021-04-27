@@ -3,9 +3,7 @@ package com.example.estacaometeorologica.controller;
 import com.example.estacaometeorologica.config.validation.ErroDeFormDto;
 import com.example.estacaometeorologica.controller.dto.DadosUsuarioDto;
 import com.example.estacaometeorologica.controller.dto.ImagemUsuarioDto;
-import com.example.estacaometeorologica.controller.form.ImagemUsuarioForm;
-import com.example.estacaometeorologica.controller.form.UsuarioLoginForm;
-import com.example.estacaometeorologica.controller.form.UsuarioSigninForm;
+import com.example.estacaometeorologica.controller.form.*;
 import com.example.estacaometeorologica.service.TokenService;
 import com.example.estacaometeorologica.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +63,26 @@ public class UsuarioController {
             return new ResponseEntity<>(new ImagemUsuarioDto(imagemUsuarioForm.getImagem()), HttpStatus.OK);
         }catch (AuthenticationException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("resetar-senha")
+    public ResponseEntity<ErroDeFormDto> resetarSenha(@RequestBody @Valid ResetarSenhaForm resetarSenhaForm){
+        try {
+            usuarioService.resetarSenha(resetarSenhaForm.getEmail());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (NullPointerException e){
+            return new ResponseEntity<>(new ErroDeFormDto("email", "Usuário não existe"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("alterar-senha")
+    public ResponseEntity<Object> alterarSenha(@RequestBody @Valid AlterarSenhaForm alterarSenhaForm, Authentication authentication){
+        try {
+            usuarioService.alterarSenha(alterarSenhaForm.getNova_senha(), authentication.getName());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (NullPointerException e){
+            return new ResponseEntity<>(new ErroDeFormDto("email", "Usuário não existe"), HttpStatus.BAD_REQUEST);
         }
     }
 }

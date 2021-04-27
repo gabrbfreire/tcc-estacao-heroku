@@ -62,8 +62,17 @@ public class ErroDeValidacaoHandler {
         if(mensagem.indexOf("Insira o campo pressao_atmosferica") != -1) {
             erroDeFormDtos.add(new ErroDeFormDto("pressao_atmosferica", "Campo não preenchido"));
         }
+        if(mensagem.indexOf("Insira o campo email") != -1) {
+            erroDeFormDtos.add(new ErroDeFormDto("email", "Campo não preenchido"));
+        }
+        if(mensagem.indexOf("Insira o campo nova_senha") != -1) {
+            erroDeFormDtos.add(new ErroDeFormDto("nova_senha", "Campo não preenchido"));
+        }
         if(mensagem.indexOf("150x150") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("imagem", "Imagem tem que ter no máximo 40kB"));
+        }
+        if(mensagem.indexOf("email inválido") != -1){
+            erroDeFormDtos.add(new ErroDeFormDto("email", "email inválido"));
         }
         return erroDeFormDtos;
     }
