@@ -22,7 +22,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000") //todo limitar origens
 public class DadosController {
 
     @Autowired

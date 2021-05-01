@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().and().cors().disable();
+        http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/login", "/sign-in", "/dados-coletados", "/resetar-senha").permitAll()
                 .antMatchers("/v2/api-docs",
@@ -63,16 +63,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
-    }
-
-    //todo CORS
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedMethods("*");
-            }
-        };
     }
 }
