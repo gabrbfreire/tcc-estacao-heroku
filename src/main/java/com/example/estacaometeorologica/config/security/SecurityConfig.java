@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        http.csrf().and().cors().disable();
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/login", "/sign-in", "/dados-coletados", "/resetar-senha").permitAll()
                 .antMatchers("/v2/api-docs",
@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
+                registry.addMapping("/**").allowedMethods("*");
             }
         };
     }

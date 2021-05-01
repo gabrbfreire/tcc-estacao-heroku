@@ -23,10 +23,8 @@ public class UsuarioController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private TokenService tokenService;
-
     @Autowired
     private UsuarioService usuarioService;
 
