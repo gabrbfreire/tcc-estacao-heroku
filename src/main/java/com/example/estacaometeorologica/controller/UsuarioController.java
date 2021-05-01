@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000") //todo limitar origens
+//@CrossOrigin(origins = "http://localhost:3000") //todo limitar origens
 public class UsuarioController {
 
     @Autowired
