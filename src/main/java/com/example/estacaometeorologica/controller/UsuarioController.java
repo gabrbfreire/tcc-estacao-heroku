@@ -15,7 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 
 @RestController
 public class UsuarioController {
@@ -63,10 +65,22 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("resetar-senha")
-    public ResponseEntity<ErroDeFormDto> resetarSenha(@RequestBody @Valid ResetarSenhaForm resetarSenhaForm){
+    @PostMapping("requisitar-reset-senha")
+    public ResponseEntity<ErroDeFormDto> requisitarResetSenha(@RequestBody @Valid ResetarSenhaForm resetarSenhaForm){
         try {
-            usuarioService.resetarSenha(resetarSenhaForm.getEmail());
+            usuarioService.requisitarResetSenha(resetarSenhaForm.getEmail());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (NullPointerException e){
+            return new ResponseEntity<>(new ErroDeFormDto("email", "Usuário não existe"), HttpStatus.BAD_REQUEST);
+        }catch (UnsupportedEncodingException | MessagingException e){
+            return new ResponseEntity<>(new ErroDeFormDto("", "Erro no envio do e-mail"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("confirmar-reset-senha")
+    public ResponseEntity<ErroDeFormDto> confirmarResetSenha(@RequestParam String id, @RequestParam String codigo){
+        try {
+            usuarioService.confirmarResetSenha(id, codigo);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (NullPointerException e){
             return new ResponseEntity<>(new ErroDeFormDto("email", "Usuário não existe"), HttpStatus.BAD_REQUEST);

@@ -16,6 +16,7 @@ public class Usuario implements UserDetails {
     private String email;
     private String senha;
     private String imagem;
+    private String codigo_reset_senha;
 
     public Usuario(String nome, String email, String senha, String imagem) {
         this.nome = nome;
@@ -62,6 +63,14 @@ public class Usuario implements UserDetails {
 
     public void setImagem(String imagem) {
         this.imagem = imagem;
+    }
+
+    public String getCodigo_reset_senha() {
+        return codigo_reset_senha;
+    }
+
+    public void setCodigo_reset_senha(String codigo_reset_senha) {
+        this.codigo_reset_senha = codigo_reset_senha;
     }
 
     @Override

@@ -12,8 +12,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), "/dados-coletados-ws")
-            .setAllowedOrigins("http://localhost:3000");//todo limitar origens
+        webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), "/dados-coletados-ws");
+            //.setAllowedOrigins("http://localhost:3000");//todo limitar origens
     }
 
     @Bean
