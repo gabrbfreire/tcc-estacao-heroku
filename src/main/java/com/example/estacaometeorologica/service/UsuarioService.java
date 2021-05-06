@@ -9,8 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -21,6 +27,8 @@ public class UsuarioService {
     private JavaMailSender javaMailSender;
     @Value("${spring.mail.username}")
     private String emailRemetente;
+    @Autowired
+    private JavaMailSender mailSender;
 
     public Usuario findUsuarioByEmail(String email){
         return usuarioRepository.findByEmail(email);
@@ -57,14 +65,48 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    public void resetarSenha(String email) {
+    public void requisitarResetSenha(String email) throws UnsupportedEncodingException, MessagingException {
         Usuario usuario = findUsuarioByEmail(email);
+
+        if(usuario != null){
+            String codigo = RandomStringUtils.randomAlphabetic(10);
+            usuario.setCodigo_reset_senha(codigo);
+            usuarioRepository.save(usuario);
+
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+
+            helper.setFrom(emailRemetente, "Estação Meteorológica");
+            helper.setTo(email);
+            helper.setSubject("Confirmação de Reset de Senha");
+            helper.setText("<b>Se você não requisitou o reset de sua senha ignore esse e-mail</b><br><br>" +
+                    "Se você requisitou o reset de sua senha clique no link abaixo para prosseguir:<br><br>" +
+                    "<a href=\"http://localhost:8080/confirmar-reset-senha?id="+ usuario.getId() +"&codigo="+ codigo +"\" target=\\\"_blank\\\">Confirmar</a>", true);
+            //href=\"a\"
+            mailSender.send(message);
+        }
+    }
+
+    public void confirmarResetSenha(String id, String codigo) {
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
+        if(optionalUsuario.isPresent()){
+            Usuario usuario = optionalUsuario.get();
+            String codigoDb = usuario.getCodigo_reset_senha();
+            if(codigoDb.equals(codigo)){
+                resetarSenha(usuario);
+            }
+        }else{
+            throw new NullPointerException();
+        }
+    }
+
+    private void resetarSenha(Usuario usuario) {
         String novaSenha = RandomStringUtils.randomAlphabetic(10);
         usuario.setSenha(new BCryptPasswordEncoder().encode(novaSenha));
         usuarioRepository.save(usuario);
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(email);
+        simpleMailMessage.setTo(usuario.getEmail());
         simpleMailMessage.setFrom(emailRemetente);
         simpleMailMessage.setSubject("Reset de senha");
         simpleMailMessage.setText("Sua senha de acesso foi resetada. \n\nSua nova senha é: "+novaSenha);
