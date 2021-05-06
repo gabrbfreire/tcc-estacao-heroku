@@ -81,7 +81,7 @@ public class UsuarioService {
             helper.setSubject("Confirmação de Reset de Senha");
             helper.setText("<b>Se você não requisitou o reset de sua senha ignore esse e-mail</b><br><br>" +
                     "Se você requisitou o reset de sua senha clique no link abaixo para prosseguir:<br><br>" +
-                    "<a href=\"http://localhost:8080/confirmar-reset-senha?id="+ usuario.getId() +"&codigo="+ codigo +"\" target=\\\"_blank\\\">Confirmar</a>", true);
+                    "<a href=\"https://tcc-estacao-meteorologica.herokuapp.com/confirmar-reset-senha?id="+ usuario.getId() +"&codigo="+ codigo +"\" target=\\\"_blank\\\">Confirmar</a>", true);
             //href=\"a\"
             mailSender.send(message);
         }
