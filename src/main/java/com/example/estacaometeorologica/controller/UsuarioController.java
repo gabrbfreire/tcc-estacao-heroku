@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidParameterException;
 
 @RestController
 public class UsuarioController {
@@ -30,7 +31,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("login")
-    public ResponseEntity<DadosUsuarioDto> autenticar(@RequestBody @Valid UsuarioLoginForm usuarioLoginForm){
+    public ResponseEntity<Object> autenticar(@RequestBody @Valid UsuarioLoginForm usuarioLoginForm){
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuarioLoginForm.getEmail(), usuarioLoginForm.getSenha()));
             String token = tokenService.gerarToken(authentication);
@@ -41,7 +42,7 @@ public class UsuarioController {
 
             return new ResponseEntity<>(dadosUsuarioDto, HttpStatus.OK);
         }catch (AuthenticationException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErroDeFormDto("", "Email ou senha incorretos") ,HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -90,10 +91,16 @@ public class UsuarioController {
     @PostMapping("alterar-senha")
     public ResponseEntity<Object> alterarSenha(@RequestBody @Valid AlterarSenhaForm alterarSenhaForm, Authentication authentication){
         try {
-            usuarioService.alterarSenha(alterarSenhaForm.getNova_senha(), authentication.getName());
+            usuarioService.alterarSenha(alterarSenhaForm.getAtual_senha(), alterarSenhaForm.getNova_senha(), authentication.getName());
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (NullPointerException e){
             return new ResponseEntity<>(new ErroDeFormDto("email", "Usuário não existe"), HttpStatus.BAD_REQUEST);
+        }catch (InvalidParameterException e){
+            if(e.getMessage().equals("senha incorreta")){
+                return new ResponseEntity<>(new ErroDeFormDto("atual_senha", "Senha incorreta"), HttpStatus.BAD_REQUEST);
+            }else {
+                return new ResponseEntity<>(new ErroDeFormDto("nova_senha", "Nova senha é igual a senha atual"), HttpStatus.BAD_REQUEST);
+            }
         }
     }
 }

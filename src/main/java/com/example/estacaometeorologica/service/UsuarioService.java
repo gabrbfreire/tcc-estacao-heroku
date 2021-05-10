@@ -10,12 +10,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidParameterException;
 import java.util.Optional;
 
 @Service
@@ -29,6 +33,8 @@ public class UsuarioService {
     private String emailRemetente;
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public Usuario findUsuarioByEmail(String email){
         return usuarioRepository.findByEmail(email);
@@ -113,8 +119,19 @@ public class UsuarioService {
         javaMailSender.send(simpleMailMessage);
     }
 
-    public void alterarSenha(String nova_senha, String email) {
+    public void alterarSenha(String atual_senha, String nova_senha, String email) {
         Usuario usuario = usuarioRepository.findByEmail(email);
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, atual_senha));
+
+        if(authentication.isAuthenticated()){
+            if(atual_senha.equals(nova_senha)){
+                throw new InvalidParameterException("");
+            }
+        }else {
+            throw new InvalidParameterException("senha incorreta");
+        }
+
         usuario.setSenha(new BCryptPasswordEncoder().encode(nova_senha));
         usuarioRepository.save(usuario);
     }
