@@ -135,4 +135,9 @@ public class UsuarioService {
         usuario.setSenha(new BCryptPasswordEncoder().encode(nova_senha));
         usuarioRepository.save(usuario);
     }
+
+    public String obterImagemUsuario(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        return usuario.getImagem();
+    }
 }

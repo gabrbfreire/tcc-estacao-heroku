@@ -66,6 +66,15 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("imagem")
+    public ResponseEntity<ImagemUsuarioDto> obterImagemUsuario(Authentication authentication){
+        try {
+            return new ResponseEntity<>(new ImagemUsuarioDto(usuarioService.obterImagemUsuario(authentication.getName())), HttpStatus.OK);
+        }catch (NullPointerException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("requisitar-reset-senha")
     public ResponseEntity<ErroDeFormDto> requisitarResetSenha(@RequestBody @Valid ResetarSenhaForm resetarSenhaForm){
         try {
