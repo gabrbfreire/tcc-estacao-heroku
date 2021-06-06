@@ -62,7 +62,7 @@ public class UsuarioService {
 
     public DadosUsuarioDto getDadosUsuario(String email){
         Usuario usuario = findUsuarioByEmail(email);
-        return new DadosUsuarioDto(usuario.getNome(), usuario.getImagem());
+        return new DadosUsuarioDto(usuario.getNome());
     }
 
     public void alterarImagem(String imagem, String email) {

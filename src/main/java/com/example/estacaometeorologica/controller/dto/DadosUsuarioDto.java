@@ -3,29 +3,19 @@ package com.example.estacaometeorologica.controller.dto;
 public class DadosUsuarioDto {
 
     private String nome;
-    private String imagem;
     private String token;
     private String tipo_autenticacao;
 
-    public DadosUsuarioDto(String nome, String imagem) {
+    public DadosUsuarioDto(String nome) {
         this.nome = nome;
-        this.imagem = imagem;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public String getImagem() {
-        return imagem;
-    }
-
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public void setImagem(String imagem) {
-        this.imagem = imagem;
     }
 
     public String getToken() {
