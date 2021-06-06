@@ -105,11 +105,9 @@ public class UsuarioController {
         }catch (NullPointerException e){
             return new ResponseEntity<>(new ErroDeFormDto("email", "Usuário não existe"), HttpStatus.BAD_REQUEST);
         }catch (InvalidParameterException e){
-            if(e.getMessage().equals("senha incorreta")){
-                return new ResponseEntity<>(new ErroDeFormDto("atual_senha", "Senha incorreta"), HttpStatus.BAD_REQUEST);
-            }else {
-                return new ResponseEntity<>(new ErroDeFormDto("nova_senha", "Nova senha é igual a senha atual"), HttpStatus.BAD_REQUEST);
-            }
+            return new ResponseEntity<>(new ErroDeFormDto("nova_senha", "Nova senha é igual a senha atual"), HttpStatus.BAD_REQUEST);
+        }catch (AuthenticationException e){
+            return new ResponseEntity<>(new ErroDeFormDto("atual_senha", "Senha incorreta"), HttpStatus.BAD_REQUEST);
         }
     }
 }

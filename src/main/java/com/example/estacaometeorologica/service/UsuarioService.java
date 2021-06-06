@@ -122,14 +122,10 @@ public class UsuarioService {
     public void alterarSenha(String atual_senha, String nova_senha, String email) {
         Usuario usuario = usuarioRepository.findByEmail(email);
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, atual_senha));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, atual_senha));
 
-        if(authentication.isAuthenticated()){
-            if(atual_senha.equals(nova_senha)){
-                throw new InvalidParameterException("");
-            }
-        }else {
-            throw new InvalidParameterException("senha incorreta");
+        if(atual_senha.equals(nova_senha)){
+            throw new InvalidParameterException();
         }
 
         usuario.setSenha(new BCryptPasswordEncoder().encode(nova_senha));
