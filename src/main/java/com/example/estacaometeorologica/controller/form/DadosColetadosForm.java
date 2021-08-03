@@ -11,10 +11,6 @@ import java.time.LocalDateTime;
 
 public class DadosColetadosForm {
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @NotNull
-    private LocalDateTime data;
     @NotNull(message = "Insira o campo precipitação")
     private Double precipitacao;
     @NotNull(message = "Insira o campo velocidade_vento")
@@ -30,7 +26,7 @@ public class DadosColetadosForm {
 
     public DadosColetados converter() {
         return new DadosColetados(
-               data,
+               LocalDateTime.now(),
                precipitacao,
                velocidade_vento,
                direcao_vento,
@@ -38,14 +34,6 @@ public class DadosColetadosForm {
                umidade_ar,
                pressao_atmosferica
        );
-    }
-
-    public LocalDateTime getData() {
-        return data;
-    }
-
-    public void setData(LocalDateTime data) {
-        this.data = data;
     }
 
     public Double getPrecipitacao() {
