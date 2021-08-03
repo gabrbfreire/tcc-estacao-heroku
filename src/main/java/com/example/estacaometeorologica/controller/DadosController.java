@@ -77,8 +77,9 @@ public class DadosController {
     }
 
     @PostMapping("dados-coletados")
-    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody @Valid DadosColetadosForm dadosColetadosForm){
-        if(dadosColetadosForm.getCodigo().equals("2q6VYU4vzsWWPX7avFdrVYTxOs0fwqP9")){
+    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody @Valid DadosColetadosForm dadosColetadosForm,
+                                                            @RequestHeader String auth){
+        if(auth.equals("2q6VYU4vzsWWPX7avFdrVYTxOs0fwqP9")){
             dadosColetadosService.saveDadosColetados(dadosColetadosForm);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }

@@ -27,8 +27,6 @@ public class DadosColetadosForm {
     private Double umidade_ar;
     @NotNull(message = "Insira o campo pressao_atmosferica")
     private Double pressao_atmosferica;
-    @NotNull(message = "Insira o campo codigo")
-    private String codigo;
 
     public DadosColetados converter() {
         return new DadosColetados(
@@ -96,13 +94,5 @@ public class DadosColetadosForm {
 
     public void setPressao_atmosferica(Double pressao_atmosferica) {
         this.pressao_atmosferica = pressao_atmosferica;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
     }
 }
