@@ -83,6 +83,6 @@ public class DadosController {
             dadosColetadosService.saveDadosColetados(dadosColetadosForm);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(new ErroDeFormDto("codigo","Código inválido"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErroDeFormDto("auth","Token inválido"), HttpStatus.BAD_REQUEST);
     }
 }
