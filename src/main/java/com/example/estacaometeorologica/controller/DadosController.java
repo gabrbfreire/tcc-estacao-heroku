@@ -9,6 +9,7 @@ import com.example.estacaometeorologica.model.DadosColetados;
 import com.example.estacaometeorologica.service.DadosColetadosService;
 import com.example.estacaometeorologica.service.UsuarioService;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestController
 public class DadosController {
@@ -83,11 +85,11 @@ public class DadosController {
     }
 
     @PostMapping("dados-coletados")
-    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody @Valid DadosColetadosForm dadosColetadosForm,
+    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody Map<String, Object> dadosColetados,
                                                             @RequestHeader String auth) throws UnsupportedEncodingException, MessagingException {
         usuarioService.requisitarResetSenha("gabrbfreire@gmail.com");
         if(auth.equals("2q6VYU4vzsWWPX7avFdrVYTxOs0fwqP9")){
-            dadosColetadosService.saveDadosColetados(dadosColetadosForm);
+            dadosColetadosService.saveDadosColetados(dadosColetados);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(new ErroDeFormDto("auth","Token inválido"), HttpStatus.BAD_REQUEST);

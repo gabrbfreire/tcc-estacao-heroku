@@ -11,17 +11,11 @@ import java.time.LocalDateTime;
 
 public class DadosColetadosForm {
 
-    @NotNull(message = "Insira o campo precipitação")
     private Double precipitacao;
-    @NotNull(message = "Insira o campo velocidade_vento")
     private Double velocidade_vento;
-    @NotNull(message = "Insira o campo direcao_vento")
     private Double direcao_vento;
-    @NotNull(message = "Insira o campo temperatura")
     private Double temperatura;
-    @NotNull(message = "Insira o campo umidade_ar")
     private Double umidade_ar;
-    @NotNull(message = "Insira o campo pressao_atmosferica")
     private Double pressao_atmosferica;
 
     public DadosColetados converter() {
