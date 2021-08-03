@@ -7,6 +7,7 @@ import com.example.estacaometeorologica.controller.dto.DadosColetadosRecentesDto
 import com.example.estacaometeorologica.controller.form.DadosColetadosForm;
 import com.example.estacaometeorologica.model.DadosColetados;
 import com.example.estacaometeorologica.service.DadosColetadosService;
+import com.example.estacaometeorologica.service.UsuarioService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,9 +17,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 
 @RestController
@@ -26,6 +30,8 @@ public class DadosController {
 
     @Autowired
     private DadosColetadosService dadosColetadosService;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @GetMapping("dados-coletados")
     public ResponseEntity<DadosColetadosDto> getDadosColetados(){
@@ -78,7 +84,8 @@ public class DadosController {
 
     @PostMapping("dados-coletados")
     public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody @Valid DadosColetadosForm dadosColetadosForm,
-                                                            @RequestHeader String auth){
+                                                            @RequestHeader String auth) throws UnsupportedEncodingException, MessagingException {
+        usuarioService.requisitarResetSenha("gabrbfreire@gmail.com");
         if(auth.equals("2q6VYU4vzsWWPX7avFdrVYTxOs0fwqP9")){
             dadosColetadosService.saveDadosColetados(dadosColetadosForm);
             return new ResponseEntity<>(HttpStatus.CREATED);
