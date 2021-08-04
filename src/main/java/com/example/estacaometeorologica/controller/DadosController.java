@@ -85,8 +85,7 @@ public class DadosController {
     }
 
     @PostMapping("dados-coletados")
-    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody Map<String, Object> dadosColetados,
-                                                            @RequestHeader String auth) throws UnsupportedEncodingException, MessagingException {
+    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody Map<String, Object> dadosColetados, @RequestHeader String auth){
         if(auth.equals("2q6VYU4vzsWWPX7avFdrVYTxOs0fwqP9")){
             dadosColetadosService.saveDadosColetados(dadosColetados);
             return new ResponseEntity<>(HttpStatus.CREATED);
