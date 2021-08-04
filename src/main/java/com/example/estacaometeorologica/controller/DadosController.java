@@ -32,8 +32,6 @@ public class DadosController {
 
     @Autowired
     private DadosColetadosService dadosColetadosService;
-    @Autowired
-    private UsuarioService usuarioService;
 
     @GetMapping("dados-coletados")
     public ResponseEntity<DadosColetadosDto> getDadosColetados(){
