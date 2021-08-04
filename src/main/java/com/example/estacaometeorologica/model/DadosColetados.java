@@ -1,13 +1,16 @@
 package com.example.estacaometeorologica.model;
 
 import org.springframework.data.annotation.Id;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.Temporal;
 
 public class DadosColetados {
 
     @Id
     private String id;
-    private LocalDateTime data;
+    private Instant data;
     private Double precipitacao;
     private Double velocidade_vento;
     private Double direcao_vento;
@@ -15,7 +18,7 @@ public class DadosColetados {
     private Double umidade_ar;
     private Double pressao_atmosferica;
 
-    public DadosColetados(LocalDateTime data, Double precipitacao, Double velocidade_vento, Double direcao_vento, Double temperatura, Double umidade_ar, Double pressao_atmosferica) {
+    public DadosColetados(Instant data, Double precipitacao, Double velocidade_vento, Double direcao_vento, Double temperatura, Double umidade_ar, Double pressao_atmosferica) {
         this.data = data;
         this.precipitacao = precipitacao;
         this.velocidade_vento = velocidade_vento;
@@ -29,11 +32,11 @@ public class DadosColetados {
         return id;
     }
 
-    public LocalDateTime getData() {
+    public Temporal getData() {
         return data;
     }
 
-    public void setData(LocalDateTime data) {
+    public void setData(Instant data) {
         this.data = data;
     }
 

@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class DadosColetadosForm {
@@ -20,7 +21,7 @@ public class DadosColetadosForm {
 
     public DadosColetados converter() {
         return new DadosColetados(
-               LocalDateTime.now(),
+               Instant.now().minusSeconds(10800),
                precipitacao,
                velocidade_vento,
                direcao_vento,
