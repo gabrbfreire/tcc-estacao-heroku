@@ -88,7 +88,7 @@ public class UsuarioService {
             helper.setText("<b>Se você não requisitou o reset de sua senha ignore esse e-mail</b><br><br>" +
                     "Se você requisitou o reset de sua senha clique no link abaixo para prosseguir:<br><br>" +
                     "<a href=\"https://tcc-estacao-meteorologica.herokuapp.com/confirmar-reset-senha?id="+ usuario.getId() +"&codigo="+ codigo +"\" target=\\\"_blank\\\">Confirmar</a><br><br>" +
-                    "Esse link só irá funcionar uma única vez, para fazer o reset de senha novamente será necessario requisitar outro reset", true);
+                    "Esse link só irá funcionar uma única vez, para fazer o reset de senha novamente será necessário requisitar outro reset", true);
             mailSender.send(message);
         }
     }
