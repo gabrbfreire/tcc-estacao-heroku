@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidParameterException;
 
@@ -88,7 +89,10 @@ public class UsuarioController {
     }
 
     @GetMapping("confirmar-reset-senha")
-    public ResponseEntity<ErroDeFormDto> confirmarResetSenha(@RequestParam String id, @RequestParam String codigo){
+    public ResponseEntity<ErroDeFormDto> confirmarResetSenha(@RequestParam
+                                                             @Pattern(regexp = "^[A-Za-z0-9]+$") String id,
+                                                             @RequestParam
+                                                             @Pattern(regexp = "^[A-Za-z0-9]+$") String codigo){
         try {
             usuarioService.confirmarResetSenha(id, codigo);
             return new ResponseEntity<>(HttpStatus.OK);

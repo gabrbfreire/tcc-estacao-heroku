@@ -87,8 +87,8 @@ public class UsuarioService {
             helper.setSubject("Confirmação de Reset de Senha");
             helper.setText("<b>Se você não requisitou o reset de sua senha ignore esse e-mail</b><br><br>" +
                     "Se você requisitou o reset de sua senha clique no link abaixo para prosseguir:<br><br>" +
-                    "<a href=\"https://tcc-estacao-meteorologica.herokuapp.com/confirmar-reset-senha?id="+ usuario.getId() +"&codigo="+ codigo +"\" target=\\\"_blank\\\">Confirmar</a>", true);
-            //href=\"a\"
+                    "<a href=\"https://tcc-estacao-meteorologica.herokuapp.com/confirmar-reset-senha?id="+ usuario.getId() +"&codigo="+ codigo +"\" target=\\\"_blank\\\">Confirmar</a><br><br>" +
+                    "Esse link só irá funcionar uma única vez, para fazer o reset de senha novamente será necessario requisitar outro reset", true);
             mailSender.send(message);
         }
     }
@@ -100,6 +100,8 @@ public class UsuarioService {
             String codigoDb = usuario.getCodigo_reset_senha();
             if(codigoDb.equals(codigo)){
                 resetarSenha(usuario);
+                usuario.setCodigo_reset_senha("");
+                usuarioRepository.save(usuario);
             }
         }else{
             throw new NullPointerException();

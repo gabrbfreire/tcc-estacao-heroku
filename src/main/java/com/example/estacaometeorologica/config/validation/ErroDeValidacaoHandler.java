@@ -74,6 +74,12 @@ public class ErroDeValidacaoHandler {
         if(mensagem.indexOf("email inválido") != -1){
             erroDeFormDtos.add(new ErroDeFormDto("email", "email inválido"));
         }
+        if(mensagem.indexOf("nome inválido") != -1){
+            erroDeFormDtos.add(new ErroDeFormDto("nome", "nome inválido"));
+        }
+        if(mensagem.indexOf("imagem inválida") != -1){
+            erroDeFormDtos.add(new ErroDeFormDto("imagem", "imagem inválida"));
+        }
         return erroDeFormDtos;
     }
 
