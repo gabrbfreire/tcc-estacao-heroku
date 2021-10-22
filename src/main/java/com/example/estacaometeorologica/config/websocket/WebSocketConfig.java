@@ -1,23 +1,24 @@
 package com.example.estacaometeorologica.config.websocket;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.*;
 
 @Configuration
-@EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
-
+@EnableAutoConfiguration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), "/dados-coletados-ws");
-            //.setAllowedOrigins("http://localhost:3000");//todo limitar origens
+    public void configureMessageBroker(MessageBrokerRegistry brokerRegistry) {
+        brokerRegistry.enableSimpleBroker("/topic/", "/queue/");
+        brokerRegistry.setApplicationDestinationPrefixes("/app");
     }
 
-    @Bean
-    public org.springframework.web.socket.WebSocketHandler getChatWebSocketHandler(){
-        return new WebSocketHandler();
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        //TODO: limitar origens permitidas ao dominio da plataforma
+        registry.addEndpoint("/dados-coletados-ws").setAllowedOrigins("*");
     }
 }

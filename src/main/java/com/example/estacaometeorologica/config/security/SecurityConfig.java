@@ -53,7 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**",
                         "/configuration/security",
                         "/swagger-ui.html",
-                        "/webjars/**").permitAll() // permitir swagger
+                        "/webjars/**",
+                        "/topic",
+                        "/dados-coletados-ws",
+                        "/topic/ultimos-registros").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

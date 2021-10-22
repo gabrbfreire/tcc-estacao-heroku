@@ -15,8 +15,11 @@ public class CorsConfig {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
+                //TODO limitar origens permitidas ao domínio da plataforma (e possívelmente do TTN)
                 registry.addMapping("/**")
                         .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS")
+                        .allowedHeaders("Accept", "Content-Type", "Origin",
+                                "Authorization", "X-Auth-Token")
                         .allowedOrigins("*");
             }
         };

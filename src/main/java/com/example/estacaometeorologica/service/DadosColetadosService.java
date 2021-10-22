@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
@@ -26,12 +27,23 @@ public class DadosColetadosService {
         return dadosColetadosRepository.findAllByOrderByDataDesc();
     }
 
-    public void saveDadosColetados(Map<String, Object> dadosColetados){
-        String decodedPayload = dadosColetados.toString().substring(dadosColetados.toString().indexOf("{direcao_vento="), dadosColetados.toString().indexOf("decoded_payload_warnings")-2);
-        Gson gson = new Gson();
-        DadosColetadosForm dadosColetadosForm = gson.fromJson(decodedPayload, DadosColetadosForm.class);
+    public void saveDadosColetados(Map<String, Object> dadosColetados) {
+        try {
+            String decodedPayload = dadosColetados.toString().substring(dadosColetados.toString().indexOf("{direcao_vento="), dadosColetados.toString().indexOf("decoded_payload_warnings")-2);
+            Gson gson = new Gson();
+            DadosColetadosForm dadosColetadosForm = gson.fromJson(decodedPayload, DadosColetadosForm.class);
 
-        dadosColetadosRepository.save(dadosColetadosForm.converter());
+            dadosColetadosRepository.save(dadosColetadosForm.converter());
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            throw e;
+        }
+
+    }
+
+    public DadosColetados getDadoColetadoInseridoMaisRecente() {
+        return dadosColetadosRepository.findFirstByOrderByDataDesc();
     }
 
     public Page<DadosColetados> getDadosColetadosPorData(LocalDateTime data_inicial, LocalDateTime data_final, Pageable paginacao) {

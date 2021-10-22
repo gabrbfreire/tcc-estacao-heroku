@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface DadosColetadosRepository extends MongoRepository<DadosColetados, String> {
 
@@ -15,4 +16,6 @@ public interface DadosColetadosRepository extends MongoRepository<DadosColetados
     List<DadosColetados> findAllByOrderByDataDesc(Pageable pageable);
 
     List<DadosColetados> findAllByOrderByDataDesc();
+
+    DadosColetados findFirstByOrderByDataDesc();
 }

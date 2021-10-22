@@ -17,7 +17,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.socket.TextMessage;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -32,6 +35,9 @@ public class DadosController {
 
     @Autowired
     private DadosColetadosService dadosColetadosService;
+
+    @Autowired
+    private SimpMessagingTemplate template;
 
     @GetMapping("dados-coletados")
     public ResponseEntity<DadosColetadosDto> getDadosColetados(){
@@ -58,7 +64,7 @@ public class DadosController {
                                                                          @RequestParam
                                                                          @NotNull
                                                                          @Min(1)
-                                                                         Integer quantidade){
+                                                                         Integer quantidade) {
         Pageable paginacao = PageRequest.of(pagina-1, quantidade);
         Page<DadosColetados> itemsPaginados = dadosColetadosService.getDadosColetadosPorData(data_inicial, data_final, paginacao);
 
@@ -77,15 +83,16 @@ public class DadosController {
     }
 
     @GetMapping("dados-recentes")
-    public ResponseEntity<DadosColetadosRecentesDto> getDadosColetadosRecentes(){
+    public ResponseEntity<DadosColetadosRecentesDto> getDadosColetadosRecentes() {
         DadosColetadosRecentesDto dadosColetadosRecentesDto = new DadosColetadosRecentesDto(dadosColetadosService.getDadosColetadosRecentes());
         return new ResponseEntity(dadosColetadosRecentesDto, HttpStatus.OK);
     }
 
     @PostMapping("dados-coletados")
-    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody Map<String, Object> dadosColetados, @RequestHeader String auth){
+    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody Map<String, Object> dadosColetados, @RequestHeader String auth) {
         if(auth.equals("2q6VYU4vzsWWPX7avFdrVYTxOs0fwqP9")){
             dadosColetadosService.saveDadosColetados(dadosColetados);
+            template.convertAndSend("/topic/ultimos-registros", dadosColetadosService.getDadoColetadoInseridoMaisRecente());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(new ErroDeFormDto("auth","Token inválido"), HttpStatus.BAD_REQUEST);
