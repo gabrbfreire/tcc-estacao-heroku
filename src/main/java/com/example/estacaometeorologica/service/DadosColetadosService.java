@@ -1,7 +1,9 @@
 package com.example.estacaometeorologica.service;
 
 import com.example.estacaometeorologica.controller.dto.DadosColetadosDto;
+import com.example.estacaometeorologica.controller.dto.TTNUplinkDto;
 import com.example.estacaometeorologica.controller.form.DadosColetadosForm;
+import com.example.estacaometeorologica.mapper.DadosColetadosMapper;
 import com.example.estacaometeorologica.model.DadosColetados;
 import com.example.estacaometeorologica.repository.DadosColetadosRepository;
 import com.google.gson.Gson;
@@ -27,13 +29,9 @@ public class DadosColetadosService {
         return dadosColetadosRepository.findAllByOrderByDataDesc();
     }
 
-    public void saveDadosColetados(Map<String, Object> dadosColetados) {
+    public void saveDadosColetados(TTNUplinkDto dto) {
         try {
-            String decodedPayload = dadosColetados.toString().substring(dadosColetados.toString().indexOf("{direcao_vento="), dadosColetados.toString().indexOf("decoded_payload_warnings")-2);
-            Gson gson = new Gson();
-            DadosColetadosForm dadosColetadosForm = gson.fromJson(decodedPayload, DadosColetadosForm.class);
-
-            dadosColetadosRepository.save(dadosColetadosForm.converter());
+            dadosColetadosRepository.save(DadosColetadosMapper.mapToEntity(dto));
         }
         catch (Exception e) {
             System.out.println(e);

@@ -4,6 +4,7 @@ import com.example.estacaometeorologica.config.validation.ErroDeFormDto;
 import com.example.estacaometeorologica.controller.dto.DadosColetadosDto;
 import com.example.estacaometeorologica.controller.dto.DadosColetadosPaginadosDto;
 import com.example.estacaometeorologica.controller.dto.DadosColetadosRecentesDto;
+import com.example.estacaometeorologica.controller.dto.TTNUplinkDto;
 import com.example.estacaometeorologica.controller.form.DadosColetadosForm;
 import com.example.estacaometeorologica.model.DadosColetados;
 import com.example.estacaometeorologica.service.DadosColetadosService;
@@ -89,7 +90,7 @@ public class DadosController {
     }
 
     @PostMapping("dados-coletados")
-    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody Map<String, Object> dadosColetados, @RequestHeader String auth) {
+    public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody TTNUplinkDto dadosColetados, @RequestHeader String auth) {
         if(auth.equals("2q6VYU4vzsWWPX7avFdrVYTxOs0fwqP9")){
             dadosColetadosService.saveDadosColetados(dadosColetados);
             template.convertAndSend("/topic/ultimos-registros", dadosColetadosService.getDadoColetadoInseridoMaisRecente());
