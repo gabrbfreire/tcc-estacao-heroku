@@ -19,6 +19,7 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.security.InvalidParameterException;
 
 @RestController
@@ -49,11 +50,11 @@ public class UsuarioController {
 
     @PostMapping("sign-in")
     public ResponseEntity<ErroDeFormDto> registrar(@RequestBody @Valid UsuarioSigninForm usuarioSigninForm){
-        String resultadoRegistro = usuarioService.registrarUsuario(usuarioSigninForm);
-        if(resultadoRegistro == ""){
+        try {
+            usuarioService.registrarUsuario(usuarioSigninForm);
             return new ResponseEntity<>(HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(new ErroDeFormDto("email", resultadoRegistro),HttpStatus.BAD_REQUEST);
+        }catch (InvalidParameterException | MessagingException | UnsupportedEncodingException e){
+            return new ResponseEntity<>(new ErroDeFormDto("email", "Usuário com esse E-mail já existe"),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -89,15 +90,15 @@ public class UsuarioController {
     }
 
     @GetMapping("confirmar-reset-senha")
-    public ResponseEntity<ErroDeFormDto> confirmarResetSenha(@RequestParam
+    public ResponseEntity<Object> confirmarResetSenha(@RequestParam
                                                              @Pattern(regexp = "^[A-Za-z0-9]+$") String id,
                                                              @RequestParam
                                                              @Pattern(regexp = "^[A-Za-z0-9]+$") String codigo){
         try {
             usuarioService.confirmarResetSenha(id, codigo);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch (NullPointerException e){
-            return new ResponseEntity<>(new ErroDeFormDto("email", "Usuário não existe"), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("https://santa-clima.netlify.app/pos-reset-senha")).build();
+        }catch (InvalidParameterException e){
+            return new ResponseEntity<>(new ErroDeFormDto("", "Esse link já foi utilizado ou o usuário não existe"), HttpStatus.BAD_REQUEST);
         }
     }
 

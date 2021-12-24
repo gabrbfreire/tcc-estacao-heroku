@@ -40,7 +40,7 @@ public class UsuarioService {
         return usuarioRepository.findByEmail(email);
     }
 
-    public String registrarUsuario(UsuarioSigninForm usuarioSigninForm) {
+    public void registrarUsuario(UsuarioSigninForm usuarioSigninForm) throws MessagingException, UnsupportedEncodingException {
         if(findUsuarioByEmail(usuarioSigninForm.getEmail()) == null){
 
             // Imagem default
@@ -54,9 +54,18 @@ public class UsuarioService {
                     new BCryptPasswordEncoder().encode(usuarioSigninForm.getSenha()),
                     usuarioSigninForm.getImagem());
             usuarioRepository.save(usuario);
-            return "";
+
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+
+            helper.setFrom(emailRemetente, "Estação Meteorológica");
+            helper.setTo(usuarioSigninForm.getEmail());
+            helper.setSubject("Confirmar criação de conta Santa Clima");
+            helper.setText("Clique no link abaixo para confirmar a criação de sua conta no Santa Clima<br><br>" +
+                    "<a href=\"https://tcc-estacao-meteorologica.herokuapp.com/confirmar-criacao-conta target=\\\"_blank\\\">Confirmar</a><br><br>", true);
+            mailSender.send(message);
         }else{
-            return "Usuário com esse E-mail já existe";
+            throw new InvalidParameterException();
         }
     }
 
@@ -102,9 +111,11 @@ public class UsuarioService {
                 resetarSenha(usuario);
                 usuario.setCodigo_reset_senha("");
                 usuarioRepository.save(usuario);
+            }else{
+                throw new InvalidParameterException();
             }
         }else{
-            throw new NullPointerException();
+            throw new InvalidParameterException();
         }
     }
 
