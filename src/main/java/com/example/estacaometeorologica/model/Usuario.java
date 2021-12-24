@@ -17,12 +17,32 @@ public class Usuario implements UserDetails {
     private String senha;
     private String imagem;
     private String codigo_reset_senha;
+    private boolean habilitado;
+    private String codigo_confirmacao;
 
-    public Usuario(String nome, String email, String senha, String imagem) {
+    public Usuario(String nome, String email, String senha, String imagem, boolean habilitado, String codigo_confirmacao) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.imagem = imagem;
+        this.habilitado = habilitado;
+        this.codigo_confirmacao = codigo_confirmacao;
+    }
+
+    public String getCodigo_confirmacao() {
+        return codigo_confirmacao;
+    }
+
+    public void setCodigo_confirmacao(String codigo_confirmacao) {
+        this.codigo_confirmacao = codigo_confirmacao;
+    }
+
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
     }
 
     public String getId() {

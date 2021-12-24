@@ -6,6 +6,7 @@ import com.example.estacaometeorologica.controller.dto.ImagemUsuarioDto;
 import com.example.estacaometeorologica.controller.form.*;
 import com.example.estacaometeorologica.service.TokenService;
 import com.example.estacaometeorologica.service.UsuarioService;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,9 @@ public class UsuarioController {
     public ResponseEntity<Object> autenticar(@RequestBody @Valid UsuarioLoginForm usuarioLoginForm){
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuarioLoginForm.getEmail(), usuarioLoginForm.getSenha()));
+            if(usuarioService.findUsuarioByEmail(usuarioLoginForm.getEmail()).isHabilitado() == false){
+                throw new InvalidParameterException();
+            }
             String token = tokenService.gerarToken(authentication);
 
             DadosUsuarioDto dadosUsuarioDto = usuarioService.getDadosUsuario(usuarioLoginForm.getEmail());
@@ -45,6 +49,8 @@ public class UsuarioController {
             return new ResponseEntity<>(dadosUsuarioDto, HttpStatus.OK);
         }catch (AuthenticationException e){
             return new ResponseEntity<>(new ErroDeFormDto("", "Email ou senha incorretos") ,HttpStatus.BAD_REQUEST);
+        }catch (InvalidParameterException e){
+            return new ResponseEntity<>(new ErroDeFormDto("", "Usuario não confirmado") ,HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -82,7 +88,7 @@ public class UsuarioController {
         try {
             usuarioService.requisitarResetSenha(resetarSenhaForm.getEmail());
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (NullPointerException e){
+        }catch (InvalidParameterException e){
             return new ResponseEntity<>(new ErroDeFormDto("email", "Usuário não existe"), HttpStatus.BAD_REQUEST);
         }catch (UnsupportedEncodingException | MessagingException e){
             return new ResponseEntity<>(new ErroDeFormDto("", "Erro no envio do e-mail"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -113,6 +119,16 @@ public class UsuarioController {
             return new ResponseEntity<>(new ErroDeFormDto("nova_senha", "Nova senha é igual a senha atual"), HttpStatus.BAD_REQUEST);
         }catch (AuthenticationException e){
             return new ResponseEntity<>(new ErroDeFormDto("atual_senha", "Senha incorreta"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("confirmar-criacao-conta/{codigo}/{id}")
+    public ResponseEntity<Object> confirmarCriacaoConta(@PathVariable String codigo, @PathVariable String id){
+        try {
+            usuarioService.confirmarCriacaoConta(codigo, id);
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("https://santa-clima.netlify.app/")).build();
+        }catch (InvalidParameterException e){
+            return new ResponseEntity<>(new ErroDeFormDto("", "Esse link já foi utilizado ou o usuário não existe"), HttpStatus.BAD_REQUEST);
         }
     }
 }
