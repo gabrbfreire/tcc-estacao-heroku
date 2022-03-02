@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 public class UsuarioSigninForm {
 
     @NotNull(message = "Insira o campo nome")
-    @Pattern(regexp = "^[A-Za-z0-9 ]+$", message = "nome inválido")
+    @Pattern(regexp = "/^(([A-Z]|[ÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ])([a-z]|[áàâãéèêíïóôõöúçñ])+ ?){2,}$/g", message = "nome inválido")
     private String nome;
     @Email(message = "email inválido")
     @NotNull(message = "Insira o campo email")
