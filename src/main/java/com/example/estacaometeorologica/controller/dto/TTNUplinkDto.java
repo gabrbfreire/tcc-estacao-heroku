@@ -35,6 +35,12 @@ public class TTNUplinkDto {
         @JsonProperty(value = "pressao_atmosferica")
         private Double pressaoAtmosferica;
 
+        @JsonProperty(value = "nivel_bateria")
+        private Double nivelBateria;
+
+        @JsonProperty(value = "cartao_sd")
+        private Boolean cartaoSD;
+
         public Double getPrecipitacao() { return precipitacao; }
 
         public Double getVelocidadeVento() { return velocidadeVento; }
@@ -46,6 +52,10 @@ public class TTNUplinkDto {
         public Double getUmidadeAr() { return umidadeAr; }
 
         public Double getPressaoAtmosferica() { return pressaoAtmosferica; }
+
+        public Double getNivelBateria() { return nivelBateria; }
+
+        public Boolean getCartaoSD() { return cartaoSD; }
 
 
     }

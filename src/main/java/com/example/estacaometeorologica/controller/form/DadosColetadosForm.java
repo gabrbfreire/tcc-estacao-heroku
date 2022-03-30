@@ -19,18 +19,6 @@ public class DadosColetadosForm {
     private Double umidade_ar;
     private Double pressao_atmosferica;
 
-    public DadosColetados converter() {
-        return new DadosColetados(
-               Instant.now().minusSeconds(10800),
-               precipitacao,
-               velocidade_vento,
-               direcao_vento,
-               temperatura,
-               umidade_ar,
-               pressao_atmosferica
-       );
-    }
-
     public Double getPrecipitacao() {
         return precipitacao;
     }

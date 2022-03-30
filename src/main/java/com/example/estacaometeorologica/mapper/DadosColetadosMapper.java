@@ -1,9 +1,13 @@
 package com.example.estacaometeorologica.mapper;
 
 import com.example.estacaometeorologica.controller.dto.TTNUplinkDto;
+import com.example.estacaometeorologica.mapper.dto.DadosColetadosCSV;
 import com.example.estacaometeorologica.model.DadosColetados;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DadosColetadosMapper {
     private DadosColetadosMapper() {
@@ -16,6 +20,7 @@ public class DadosColetadosMapper {
         }
 
         final TTNUplinkDto.InternalDadosColetadosDto dadosDoTTN = dto.getMessage().getDadosColetados();
+
         return new DadosColetados(
                 Instant.now().minusSeconds(10800),
                 dadosDoTTN.getPrecipitacao(),
@@ -23,7 +28,13 @@ public class DadosColetadosMapper {
                 dadosDoTTN.getDirecaoVento(),
                 dadosDoTTN.getTemperatura(),
                 dadosDoTTN.getUmidadeAr(),
-                dadosDoTTN.getPressaoAtmosferica()
+                dadosDoTTN.getPressaoAtmosferica(),
+                dadosDoTTN.getNivelBateria(),
+                dadosDoTTN.getCartaoSD()
         );
+    }
+
+    public static List<DadosColetadosCSV> mapToCSVList(List<DadosColetados> dadosColetados) {
+        return dadosColetados.stream().map(DadosColetadosCSV::new).collect(Collectors.toList());
     }
 }
