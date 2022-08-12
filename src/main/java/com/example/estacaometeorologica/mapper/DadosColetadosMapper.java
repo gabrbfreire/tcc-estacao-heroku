@@ -21,7 +21,9 @@ public class DadosColetadosMapper {
                 || dto.getMessage().getDadosColetados().getPressaoAtmosferica() == null
                 || dto.getMessage().getDadosColetados().getTemperatura() == null
                 || dto.getMessage().getDadosColetados().getUmidadeAr() == null
-                || dto.getMessage().getDadosColetados().getVelocidadeVento() == null) {
+                || dto.getMessage().getDadosColetados().getVelocidadeVento() == null
+                || dto.getMessage().getDadosColetados().getCartaoSD() == null
+                || dto.getMessage().getDadosColetados().getNivelBateria() == null) {
             throw new IllegalArgumentException("Formato de dados coletados inválido.");
         }
 
