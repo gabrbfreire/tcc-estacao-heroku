@@ -113,9 +113,13 @@ public class DadosController {
     @PostMapping("dados-coletados")
     public ResponseEntity<ErroDeFormDto> saveDadosColetados(@RequestBody TTNUplinkDto dadosColetados, @RequestHeader String auth) {
         if(auth.equals("2q6VYU4vzsWWPX7avFdrVYTxOs0fwqP9")){
-            dadosColetadosService.saveDadosColetados(dadosColetados);
-            template.convertAndSend("/topic/ultimos-registros", dadosColetadosService.getUltimoDadoColetadoInserido());
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            try {
+                dadosColetadosService.saveDadosColetados(dadosColetados);
+                template.convertAndSend("/topic/ultimos-registros", dadosColetadosService.getUltimoDadoColetadoInserido());
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            }catch (Exception e){
+                return new ResponseEntity<>(new ErroDeFormDto("",e.getMessage()), HttpStatus.BAD_REQUEST);
+            }
         }
         return new ResponseEntity<>(new ErroDeFormDto("auth","Token inválido"), HttpStatus.BAD_REQUEST);
     }

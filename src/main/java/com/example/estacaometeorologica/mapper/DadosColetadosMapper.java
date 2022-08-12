@@ -15,7 +15,13 @@ public class DadosColetadosMapper {
     }
 
     public static DadosColetados mapToEntity(TTNUplinkDto dto) {
-        if (dto == null || dto.getMessage() == null || dto.getMessage().getDadosColetados() == null) {
+        if (dto == null || dto.getMessage() == null || dto.getMessage().getDadosColetados() == null
+                || dto.getMessage().getDadosColetados().getDirecaoVento() == null
+                || dto.getMessage().getDadosColetados().getPrecipitacao() == null
+                || dto.getMessage().getDadosColetados().getPressaoAtmosferica() == null
+                || dto.getMessage().getDadosColetados().getTemperatura() == null
+                || dto.getMessage().getDadosColetados().getUmidadeAr() == null
+                || dto.getMessage().getDadosColetados().getVelocidadeVento() == null) {
             throw new IllegalArgumentException("Formato de dados coletados inválido.");
         }
 
