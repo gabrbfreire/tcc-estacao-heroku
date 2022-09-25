@@ -37,13 +37,6 @@ public class DadosColetadosCSV {
     @CsvBindByPosition(position = 6)
     private Double pressaoAtmosferica;
 
-    @CsvBindByName(column = "Nivel Bateria (%)")
-    @CsvBindByPosition(position = 7)
-    private Double nivelBateria;
-
-    @CsvBindByName(column = "Cartao SD")
-    @CsvBindByPosition(position = 8)
-    private Boolean cartaoSd;
 
     public DadosColetadosCSV(DadosColetados dadosColetados) {
         data = LocalDateTime.ofInstant(dadosColetados.getData(), ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
@@ -53,7 +46,5 @@ public class DadosColetadosCSV {
         umidade = dadosColetados.getUmidade_ar();
         direcaoVento = dadosColetados.getDirecao_vento();
         velocidadeVento = dadosColetados.getVelocidade_vento();
-        nivelBateria = dadosColetados.getNivel_bateria();
-        cartaoSd = dadosColetados.getCartao_sd();
     }
 }
