@@ -20,4 +20,6 @@ public interface DadosColetadosRepository extends MongoRepository<DadosColetados
     List<DadosColetados> findAllByOrderByDataDesc();
 
     DadosColetados findFirstByOrderByDataDesc();
+
+    List<DadosColetados> findFirst2ByOrderByDataDesc();
 }
