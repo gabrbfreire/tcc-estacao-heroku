@@ -26,7 +26,7 @@ public class RelatorioService {
 
     public void writeReport(RelatoriosFilter filter, Writer writer) {
         final List<DadosColetados> dadosColetados = dadosColetadosRepository
-                .findByDataBetweenOrderByDataDesc(filter.getDataInicial(), filter.getDataFinal());
+                .findByDataBetweenOrderByDataAsc(filter.getDataInicial(), filter.getDataFinal());
 
         final List<DadosColetadosCSV> dadosColetadosCSV = DadosColetadosMapper.mapToCSVList(dadosColetados);
 

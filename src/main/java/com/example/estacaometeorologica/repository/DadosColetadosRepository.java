@@ -15,6 +15,9 @@ public interface DadosColetadosRepository extends MongoRepository<DadosColetados
 
     List<DadosColetados> findByDataBetweenOrderByDataDesc(LocalDateTime startDate, LocalDateTime endDate);
 
+    List<DadosColetados> findByDataBetweenOrderByDataAsc(LocalDateTime startDate, LocalDateTime endDate);
+
+
     List<DadosColetados> findAllByOrderByDataDesc(Pageable pageable);
 
     List<DadosColetados> findAllByOrderByDataDesc();
