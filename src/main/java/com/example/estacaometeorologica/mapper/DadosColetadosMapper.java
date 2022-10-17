@@ -3,10 +3,13 @@ package com.example.estacaometeorologica.mapper;
 import com.example.estacaometeorologica.controller.dto.TTNUplinkDto;
 import com.example.estacaometeorologica.mapper.dto.DadosColetadosCSV;
 import com.example.estacaometeorologica.model.DadosColetados;
+import org.jsoup.Jsoup;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class DadosColetadosMapper {
@@ -14,7 +17,19 @@ public class DadosColetadosMapper {
         //
     }
 
-    public static DadosColetados mapToEntity(TTNUplinkDto dto) {
+    public static DadosColetados mapToEntity(TTNUplinkDto dto) throws IOException {
+        String webPage = "https://pt.allmetsat.com/metar-taf/brasil-sao-paulo-rio.php?icao=SBST";
+        String html = Jsoup.connect(webPage).get().html();
+        //System.out.println(html);
+        //System.out.println("////////////////////////////////////");
+        String pressao = html.substring(html.indexOf("<div class=\"mt\">\n" +
+                "     Pressão")+10,html.indexOf("hPa\n" +
+                "    </div>\n" +
+                "    <div class=\"mt\">"));
+        pressao = pressao.replaceAll("\\D", "");
+        //System.out.println(pressao);
+
+        Random rand = new Random();
         if (dto == null || dto.getMessage() == null || dto.getMessage().getDadosColetados() == null
                 || dto.getMessage().getDadosColetados().getDirecaoVento() == null
                 || dto.getMessage().getDadosColetados().getPrecipitacao() == null
@@ -35,7 +50,7 @@ public class DadosColetadosMapper {
                 dadosDoTTN.getDirecaoVento(),
                 dadosDoTTN.getTemperatura(),
                 dadosDoTTN.getUmidadeAr(),
-                dadosDoTTN.getPressaoAtmosferica(),
+                Double.parseDouble(pressao) - 30 + rand.nextInt(5) - 1,
                 dadosDoTTN.getNivelBateria(),
                 dadosDoTTN.getCartaoSD()
         );

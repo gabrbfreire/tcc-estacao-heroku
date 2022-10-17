@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class DadosColetadosService {
         return dadosColetadosRepository.findAllByOrderByDataDesc();
     }
 
-    public void saveDadosColetados(TTNUplinkDto dto) {
+    public void saveDadosColetados(TTNUplinkDto dto) throws IOException {
         try {
             DadosColetados dadosColetados = DadosColetadosMapper.mapToEntity(dto);
             corrigirValoresAnormais(dadosColetados);
