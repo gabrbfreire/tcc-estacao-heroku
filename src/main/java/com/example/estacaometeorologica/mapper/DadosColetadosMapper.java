@@ -50,7 +50,7 @@ public class DadosColetadosMapper {
                 dadosDoTTN.getDirecaoVento(),
                 dadosDoTTN.getTemperatura(),
                 dadosDoTTN.getUmidadeAr(),
-                Double.parseDouble(pressao) - 9 + rand.nextInt(5) - 1,
+                Double.parseDouble(pressao) - 9 + rand.nextInt(7) - 1,
                 dadosDoTTN.getNivelBateria(),
                 dadosDoTTN.getCartaoSD()
         );
