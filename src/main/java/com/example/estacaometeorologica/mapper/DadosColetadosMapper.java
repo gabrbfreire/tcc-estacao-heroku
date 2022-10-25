@@ -6,6 +6,7 @@ import com.example.estacaometeorologica.model.DadosColetados;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,7 +45,7 @@ public class DadosColetadosMapper {
         final TTNUplinkDto.InternalDadosColetadosDto dadosDoTTN = dto.getMessage().getDadosColetados();
 
         double vento = dadosDoTTN.getVelocidadeVento() * (20 + rand.nextInt(2) - 1 + rand.nextInt(3) - 1);
-
+        DecimalFormat format = new DecimalFormat("#0.00");
         if(vento > 20){
             vento = vento - 7;
         }
