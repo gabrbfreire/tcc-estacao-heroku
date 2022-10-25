@@ -52,6 +52,10 @@ public class DadosColetadosMapper {
             vento = vento - 7;
         }
 
+        if(vento > 5 && vento < 6){
+            vento = vento - 2.5;
+        }
+
         return new DadosColetados(
                 Instant.now().minusSeconds(10800),
                 dadosDoTTN.getPrecipitacao(),
