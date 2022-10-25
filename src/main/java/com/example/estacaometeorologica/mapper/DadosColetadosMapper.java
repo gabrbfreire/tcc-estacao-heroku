@@ -46,8 +46,6 @@ public class DadosColetadosMapper {
 
         double vento = dadosDoTTN.getVelocidadeVento() * (20 + rand.nextInt(5) - 1 - rand.nextInt(7) - 1);
         DecimalFormat formater = new DecimalFormat("#0.00");
-        String ventoString = formater.format(vento);
-        vento = Double.parseDouble(ventoString);
         if(vento > 20){
             vento = vento - 7;
         }
@@ -55,6 +53,9 @@ public class DadosColetadosMapper {
         if(vento > 5 && vento < 6){
             vento = vento - 2.5;
         }
+
+        String ventoString = formater.format(vento);
+        vento = Double.parseDouble(ventoString);
 
         return new DadosColetados(
                 Instant.now().minusSeconds(10800),
