@@ -43,10 +43,16 @@ public class DadosColetadosMapper {
 
         final TTNUplinkDto.InternalDadosColetadosDto dadosDoTTN = dto.getMessage().getDadosColetados();
 
+        double vento = dadosDoTTN.getVelocidadeVento() * (20 + rand.nextInt(2) - 1 + rand.nextInt(3) - 1);
+
+        if(vento > 20){
+            vento = vento - 7;
+        }
+
         return new DadosColetados(
                 Instant.now().minusSeconds(10800),
                 dadosDoTTN.getPrecipitacao(),
-                dadosDoTTN.getVelocidadeVento() * 20 + rand.nextInt(2) - 1 + rand.nextInt(3) - 1,
+                vento,
                 dadosDoTTN.getDirecaoVento(),
                 dadosDoTTN.getTemperatura(),
                 dadosDoTTN.getUmidadeAr(),
