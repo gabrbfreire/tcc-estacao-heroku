@@ -50,8 +50,12 @@ public class DadosColetadosMapper {
             vento = vento - 7;
         }
 
-        if(vento > 5 && vento < 6){
+        if(vento > 5.2 && vento < 5.5){
             vento = vento - 2.5;
+        }
+
+        if(vento > 5.7 && vento < 6){
+            vento = vento + 2;
         }
 
         String ventoString = formater.format(vento);
