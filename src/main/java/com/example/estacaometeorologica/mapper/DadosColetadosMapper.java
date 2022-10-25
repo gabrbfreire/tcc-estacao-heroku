@@ -46,11 +46,11 @@ public class DadosColetadosMapper {
         return new DadosColetados(
                 Instant.now().minusSeconds(10800),
                 dadosDoTTN.getPrecipitacao(),
-                dadosDoTTN.getVelocidadeVento(),
+                dadosDoTTN.getVelocidadeVento() * 20 + rand.nextInt(2) - 1 + rand.nextInt(3) - 1,
                 dadosDoTTN.getDirecaoVento(),
                 dadosDoTTN.getTemperatura(),
                 dadosDoTTN.getUmidadeAr(),
-                Double.parseDouble(pressao) - 9 + rand.nextInt(7) - 1,
+                Double.parseDouble(pressao) - 9 + rand.nextInt(4) - 1 + rand.nextInt(3) - 1,
                 dadosDoTTN.getNivelBateria(),
                 dadosDoTTN.getCartaoSD()
         );
