@@ -45,7 +45,9 @@ public class DadosColetadosMapper {
         final TTNUplinkDto.InternalDadosColetadosDto dadosDoTTN = dto.getMessage().getDadosColetados();
 
         double vento = dadosDoTTN.getVelocidadeVento() * (20 + rand.nextInt(2) - 1 + rand.nextInt(3) - 1);
-        DecimalFormat format = new DecimalFormat("#0.00");
+        DecimalFormat formater = new DecimalFormat("#0.00");
+        String ventoString = formater.format(vento);
+        vento = Double.parseDouble(ventoString);
         if(vento > 20){
             vento = vento - 7;
         }
