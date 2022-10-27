@@ -64,7 +64,7 @@ public class DadosColetadosMapper {
         return new DadosColetados(
                 Instant.now().minusSeconds(10800),
                 dadosDoTTN.getPrecipitacao(),
-                vento,
+                dadosDoTTN.getVelocidadeVento(),//vento
                 dadosDoTTN.getDirecaoVento(),
                 dadosDoTTN.getTemperatura(),
                 dadosDoTTN.getUmidadeAr(),
