@@ -50,7 +50,7 @@ public class DadosColetadosMapper {
             vento = vento - 7;
         }
 
-        if(vento > 5.2 && vento < 5.5){
+        if(vento > 5.2 && vento < 5.7){
             vento = vento - 2.5;
         }
 
